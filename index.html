@@ -154,6 +154,34 @@
   .haul span{font-size:15px;color:var(--ink)}
   .haul .why{display:block;font-size:13.5px;color:var(--ink-3);margin-top:3px;text-decoration:none}
 
+  /* ---- troubleshooting ---- */
+  .fixgrp{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);margin:22px 0 9px;display:flex;align-items:center;gap:10px}
+  .fixgrp::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .fixgrp.b{color:var(--alt)} .fixgrp.c{color:var(--ok)} .fixgrp.d{color:var(--warn)}
+  .fixes{display:flex;flex-direction:column;gap:7px}
+  .fixes details{background:var(--surface);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .fixes details[open]{border-color:var(--accent)}
+  .fixes summary{list-style:none;cursor:pointer;padding:12px 14px 12px 38px;position:relative;
+    font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.5;user-select:none}
+  .fixes summary::-webkit-details-marker{display:none}
+  .fixes summary::before{content:"+";position:absolute;left:14px;top:11px;
+    font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--ink-3);
+    width:14px;text-align:center;transition:.15s}
+  .fixes details[open] summary::before{content:"−";color:var(--accent)}
+  .fixes summary:hover{background:var(--surface-2)}
+  .fixes summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .fixes details.fx2[open]{border-color:var(--alt)} .fixes details.fx2[open] summary::before{color:var(--alt)}
+  .fixes details.fx3[open]{border-color:var(--ok)}  .fixes details.fx3[open] summary::before{color:var(--ok)}
+  .fixes details.fx4[open]{border-color:var(--warn)} .fixes details.fx4[open] summary::before{color:var(--warn)}
+  .fixbody{padding:2px 16px 15px 38px;border-top:1px solid var(--line-2);margin-top:-1px}
+  .fixbody p{margin:11px 0 0;font-size:14px;color:var(--ink-2);line-height:1.6}
+  .fixbody p.urgent{color:var(--warn);font-weight:600}
+  .fixbody ol{margin:9px 0 0;padding-left:19px;display:flex;flex-direction:column;gap:7px}
+  .fixbody li{font-size:14px;color:var(--ink-2);line-height:1.6}
+  .fixbody li::marker{color:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .fixbody b{color:var(--ink);font-weight:600}
+
   /* ---- multiple choice ---- */
   .scorebox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin-bottom:14px;box-shadow:var(--shadow)}
   .scorebox .n{font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -227,6 +255,7 @@
   <div class="jump">
     <a href="#part1">전송선로</a>
     <a href="#part2">서보모터</a>
+    <a href="#fix">고장</a>
     <a href="#quiz">문제</a>
     <button class="reset" id="reset" type="button">초기화</button>
   </div>
@@ -571,6 +600,340 @@
       <ul><li>DC brush-type 서보모터</li><li>모터 축 incremental encoder</li><li>rail encoder</li><li>platform</li><li>belt drive · pulley</li><li>flywheel</li><li>friction brake</li></ul></div>
     <div class="part"><h4>Digital Servo Controller</h4>
       <ul><li>DC 모터 파워 앰프</li><li>마이크로컨트롤러</li><li>ADC · DAC</li><li>USB 인터페이스</li></ul></div>
+  </div>
+</section>
+
+<section id="fix">
+  <h2>안 될 때 — 증상으로 찾아라</h2>
+  <p>해당하는 줄을 눌러서 펴라. <strong>조교 부르기 전에 세 가지는 먼저 봐라</strong> — 전원이 켜져 있나, 케이블이 제 자리에 꽂혔나, 화면 설정값이 표와 같나. 실험실에서 나는 고장의 대부분이 이 셋이다.</p>
+
+  <div class="fixgrp">전송선로 · 파형이 안 잡힐 때</div>
+  <div class="fixes">
+
+    <details class="fx1"><summary>화면에 아무것도 안 나온다 / 파형이 옆으로 계속 흐른다</summary><div class="fixbody">
+      <p><b>거의 항상 트리거 문제다.</b></p>
+      <ol>
+        <li>STEP GENERATOR <b>100 Ω</b> 출력이 오실로스코프 <b>트리거 입력</b>에 꽂혀 있나? 50 Ω과 바꿔 꽂은 경우가 제일 흔하다.</li>
+        <li>Trigger Source가 <b>External</b>인가? Internal / CH1로 되어 있으면 안 걸린다.</li>
+        <li>Trigger Level <b>0.3 V</b>. 너무 높으면 아무것도 안 잡힌다.</li>
+        <li>그래도 안 되면 Base Unit 전원과 회로판 LED 두 개부터 확인.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>회로판 LED가 하나만 켜지거나 아예 안 켜진다</summary><div class="fixbody">
+      <ol>
+        <li>회로판이 Base Unit에 <b>끝까지 눌러 끼워졌는지</b> 양쪽 모서리를 눌러 확인해라. 한쪽만 걸린 경우가 많다.</li>
+        <li>Base Unit 전원 스위치와 콘센트.</li>
+        <li>둘 다 정상인데 LED가 안 들어오면 <b>회로판 불량</b>이다. 혼자 붙들지 말고 조교에게 교체를 요청해라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>계단이 한 번만 올라간다 — 반사파가 안 보인다</summary><div class="fixbody">
+      <ol>
+        <li><b>LINE A 수신단에 뭔가 꽂혀 있는지 봐라.</b> 완전히 비워야(개방) 반사가 생긴다. 케이블이 하나라도 물려 있으면 반사파가 사라지거나 작아진다.</li>
+        <li>타임베이스가 너무 빠르면 반사파가 <b>화면 오른쪽 밖</b>으로 나간다. 0.2 µs/div로 넓혀 두 계단을 먼저 찾고, 그다음 0.05로 확대해라.</li>
+        <li>수평 위치(Position) 노브를 좌우로 돌려 화면 밖에 숨어 있는지 확인.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>두 번째 계단이 위가 아니라 <b>아래로</b> 내려간다</summary><div class="fixbody">
+      <p><b>수신단이 개방이 아니라 단락(short)된 상태다.</b></p>
+      <ol>
+        <li>개방이면 반사 계단이 <b>같은 방향(위로)</b> 올라간다. 아래로 꺾이면 끝이 short된 것이다.</li>
+        <li>LINE A 수신단에 케이블이 물려 반대쪽이 접지에 닿아 있지 않은지 확인. 완전히 빼라.</li>
+        <li>이 현상 자체는 교재 뒷 단원(부하 임피던스에 따른 반사) 내용이라, 관찰했으면 고찰거리로 적어두면 좋다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>계단이 세 개 이상 계단식으로 계속 올라간다</summary><div class="fixbody">
+      <p><b>고장이 아니라 다중 반사다.</b> 반사파가 송신단까지 돌아와 거기서 또 반사되는 것이 반복된다.</p>
+      <ol>
+        <li>2T는 <b>맨 앞의 두 계단</b> 사이만 재면 된다. 뒤쪽 계단은 무시해라.</li>
+        <li>결과보고서에 "송신단 임피던스도 정합되지 않아 재반사가 관측되었다"고 한 줄 쓰면 좋은 관찰이 된다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>파형이 지저분하다 / 잔떨림이 심하다</summary><div class="fixbody">
+      <p><b>프로브 접지를 엉뚱한 데 물렸을 가능성이 크다.</b> 교재가 따로 주의를 준 부분이다.</p>
+      <ol>
+        <li>접지 리드를 <b>같은 0 m 위치의 바로 옆 실드 터렛</b>에 물려라. 멀리 있는 접지에 물리면 그 사이 배선이 안테나처럼 작동해 노이즈가 올라탄다.</li>
+        <li>Input Coupling이 <b>DC</b>인지 확인. AC로 두면 계단 윗부분이 흘러내린다.</li>
+        <li>프로브 클립이 터렛에 헐겁게 걸쳐만 있지 않은지 다시 물려라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>2T를 잴 때마다 값이 달라진다</summary><div class="fixbody">
+      <ol>
+        <li>트리거가 불안정한 것이다. Level을 조금씩 돌려 파형이 <b>화면에 딱 멈추는</b> 지점을 찾아라.</li>
+        <li>오실로스코프에 <b>RUN / STOP</b>이 있으면 파형이 예쁘게 잡힌 순간 STOP을 눌러 정지시킨 뒤 재라. 훨씬 정확하다.</li>
+        <li>커서 기능이 있으면 눈금 세지 말고 커서를 써라. 두 모서리의 <b>같은 높이 지점</b>에 맞춰야 한다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>2T가 기대값보다 훨씬 짧게 나온다</summary><div class="fixbody">
+      <ol>
+        <li><b>프로브를 0 m 터렛에 물렸나?</b> 선로 중간의 6 m·12 m·18 m 터렛에 물리면 그 지점까지의 왕복만 재게 되어 2T가 짧아진다.</li>
+        <li>타임베이스 자릿수 확인. 0.05 µs/div를 0.5로 착각하면 10배 어긋난다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>계산한 v<sub>F</sub>가 100 %를 넘거나, ε<sub>r</sub>이 1보다 작다</summary><div class="fixbody">
+      <p><b>물리적으로 불가능한 값이다.</b> 빛보다 빠르다는 뜻이므로 2T를 너무 짧게 읽었다.</p>
+      <ol>
+        <li>두 상승 모서리의 <b>같은 지점끼리</b> 재고 있나? 한쪽은 모서리 시작점, 다른 쪽은 중간을 짚으면 어긋난다.</li>
+        <li>단위 확인. <span class="mono">240 ns = 0.24 µs = 240 × 10⁻⁹ s</span>다.</li>
+        <li>기대값은 <span class="mono">v<sub>P</sub> ≈ 2.0 × 10⁸ m/s</span>, <span class="mono">v<sub>F</sub> ≈ 66 %</span>, <span class="mono">ε<sub>r</sub> ≈ 2.25</span>.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>v<sub>P</sub>가 기대값의 딱 두 배 또는 절반이다</summary><div class="fixbody">
+      <p><b>선로 길이 l을 잘못 넣은 것이다.</b></p>
+      <ol>
+        <li>LINE A만 쓰는 중이면 <span class="mono">l = 24 m</span>, LINE B까지 이었으면 <span class="mono">l = 48 m</span>.</li>
+        <li>공식이 <span class="mono">2l / 2T</span>인지 확인. <span class="mono">l / 2T</span>로 쓰면 정확히 절반이 나온다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>48 m로 이었는데 2T가 그대로다</summary><div class="fixbody">
+      <ol>
+        <li>연결 케이블이 <b>LINE A 수신단 ↔ LINE B 송신단</b>을 잇고 있나? 다른 터렛에 꽂으면 선로가 안 이어진다.</li>
+        <li><b>LINE B 수신단은 비워야</b> 한다. 여기까지 뭔가 물리면 반사 위치가 달라진다.</li>
+        <li>타임베이스를 0.2 µs/div로 되돌렸나? 0.05인 채로 보면 두 배가 된 반사파가 화면 밖으로 나간다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx1"><summary>계단 높이가 너무 작거나 위아래로 잘린다</summary><div class="fixbody">
+      <ol>
+        <li>Sensitivity <b>0.2 V/div</b> 확인.</li>
+        <li><b>프로브 배율</b>(×1 / ×10) 스위치와 오실로스코프 설정을 일치시켜라. 여기가 안 맞으면 딱 10배 어긋난다.</li>
+        <li>2T만 재면 되는 실험이라 <b>높이가 조금 어긋나도 결과에는 지장 없다.</b> 시간 없으면 그냥 진행해라.</li>
+      </ol>
+    </div></details>
+
+  </div>
+
+  <div class="fixgrp b">서보모터 · 장비와 화면</div>
+  <div class="fixes">
+
+    <details class="fx2"><summary>프로그램이 장비를 못 찾는다 / USB Fail 램프에 불이 들어온다</summary><div class="fixbody">
+      <ol>
+        <li>서보 컨트롤러 <b>전원</b>이 켜져 있나. 프로그램보다 컨트롤러를 <b>먼저</b> 켜야 한다.</li>
+        <li>USB를 뽑았다 다시 꽂고 <b>프로그램을 껐다 켜라.</b> 순서는 컨트롤러 On → 프로그램 실행.</li>
+        <li>화면 오른쪽 Power Amplifier 구역의 <b>Fault Status</b>가 빨간불이면 <b>FAULT RESET</b>을 눌러라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>프로그램 실행하자마자 오류창이 뜬다</summary><div class="fixbody">
+      <ol>
+        <li>대개 <b>컨트롤러를 안 켜고 프로그램을 먼저 연 경우</b>다. 프로그램을 완전히 닫고, 컨트롤러 전원 → 프로그램 순으로 다시.</li>
+        <li>앞 조가 프로그램을 <b>Exit로 안 닫고</b> 창만 내려둔 경우도 있다. 작업 표시줄에 같은 프로그램이 이미 떠 있는지 확인해 모두 닫아라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>모터가 아예 안 돈다</summary><div class="fixbody">
+      <p>이 순서로 보면 거의 다 잡힌다.</p>
+      <ol>
+        <li><b>friction brake 핸들이 잠겨 있나.</b> 1순위. 잠긴 채로는 전류만 먹고 안 움직인다.</li>
+        <li>Function Generator의 <b>Power 버튼이 초록인가.</b> 회색이면 꺼진 상태다.</li>
+        <li><b>K<sub>p</sub>가 0인가.</b> 교재 Table 1 값이 0이라 제어기가 힘을 안 준다. 실제로 돌려 봐야 하면 1로 올려라(조교 지시 우선).</li>
+        <li>Fault Status 빨간불 → FAULT RESET.</li>
+        <li>모터 전원 케이블이 컨트롤러에 제대로 꽂혔나.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>그래프는 잘 그려지는데 플랫폼이 안 움직인다</summary><div class="fixbody">
+      <p><b>이건 정상일 가능성이 높다.</b></p>
+      <ol>
+        <li>속도 제어(Speed Loop)에서는 <b>벨트를 분리해 두므로</b> 플랫폼이 원래 안 움직인다. 움직이는 건 모터 축과 플라이휠이다.</li>
+        <li>그래프에 그리는 신호도 Reference(지령값)라서 모터가 안 돌아도 삼각파는 그려진다.</li>
+        <li>플랫폼을 움직여 보고 싶으면 Position Loop + 벨트 체결 상태여야 한다. <b>속도 제어에서는 절대 벨트를 걸지 마라.</b></li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>모터가 한쪽 방향으로만 계속 돈다</summary><div class="fixbody">
+      <ol>
+        <li><b>Offset이 0 %가 아니다.</b> 값이 한쪽으로 치우쳐 있으면 왕복하지 않고 한 방향으로만 간다.</li>
+        <li>Signal Type이 Triangle이 아니라 <b>Constant</b>로 되어 있을 수 있다.</li>
+        <li>Upper / Lower Limit이 <span class="mono">100 % / −100 %</span>로 대칭인지 확인.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>값을 입력했는데 화면에 반영이 안 된다</summary><div class="fixbody">
+      <ol>
+        <li>숫자 칸에 타이핑한 뒤 <b>Enter를 눌러야</b> 적용되는 항목이 있다. 다른 데를 클릭하기 전에 Enter.</li>
+        <li>같은 항목이 <b>둥근 노브와 숫자 칸 양쪽</b>에 있는 경우, 노브를 돌리면 숫자가 따라 바뀐다. 숫자가 안 바뀌면 잘못 건드린 것이다.</li>
+        <li>Power가 On인 상태에서는 잠기는 값이 있다. <b>Power를 끄고</b> 설정한 뒤 마지막에 켜라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>Speed Loop 화면에 인코더가 하나만 보인다</summary><div class="fixbody">
+      <p><b>정상이다.</b> 속도 제어는 모터 축 incremental encoder 하나만 쓴다. 레일 인코더는 위치 제어에서만 선택할 수 있다. 교재 절차 11에 그렇게 적혀 있고, 시험에도 나오는 포인트다.</p>
+    </div></details>
+
+    <details class="fx2"><summary>Position Loop로 들어왔는데 원래 뭘 해야 하지</summary><div class="fixbody">
+      <ol>
+        <li>교재 절차 9~10은 <b>Position Loop를 열어 기본 화면만 확인하고 Exit</b>하는 것이다. 여기서 실험하는 게 아니다.</li>
+        <li>실제 데이터는 <b>Speed Loop → Device Controlled</b>에서 뽑는다(절차 11부터).</li>
+        <li>Position Loop 기본 화면은 보고서에 넣을 사진으로 한 장 찍어두면 좋다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>삼각파가 아니라 다른 모양이 나온다</summary><div class="fixbody">
+      <ol>
+        <li><b>Signal Type이 Triangle인가.</b> 기본값이 Constant라 그냥 두면 직선만 나온다.</li>
+        <li>봉우리 간격이 1초가 아니면 <b>Frequency가 1 Hz가 아닌 것.</b></li>
+        <li>위아래로 잘리면 <b>Amplitude 50 %</b>, 한쪽으로 치우쳤으면 <b>Offset 0 %</b> 확인.</li>
+        <li>Display Type은 <b>Sweep</b>.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>그래프가 중간부터 평평한 직선이 된다</summary><div class="fixbody">
+      <ol>
+        <li><b>브레이크</b>가 잠겼거나, 도중에 <b>Power가 꺼졌다.</b></li>
+        <li>플랫폼이 <b>레일 끝에 걸렸다.</b> 가운데로 다시 밀어놓고 재시작.</li>
+        <li>이미 뽑은 데이터라면 버리지 마라 — <b>"이 구간은 플랫폼이 정지한 상태"</b>라고 결과보고서에 쓰면 그대로 고찰 한 문단이 된다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>모터에서 큰 소리가 나거나 심하게 떨린다</summary><div class="fixbody">
+      <p class="urgent">먼저 <b>Power를 끄고</b> 확인해라.</p>
+      <ol>
+        <li>플라이휠 <b>고정 나사</b>가 헐거우면 편심으로 심하게 떨린다. 육각 키로 조여라.</li>
+        <li>벨트가 풀리와 핀 사이에 <b>어중간하게 걸쳐 있으면</b> 긁히는 소리가 난다. 확실히 핀 위로 올리거나 확실히 풀리에 걸어라.</li>
+        <li>K<sub>p</sub>를 너무 크게 올리면 제어가 발진해 떨린다. 값을 되돌려라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>플랫폼이 레일 끝으로 밀려가 부딪힌다</summary><div class="fixbody">
+      <p class="urgent">즉시 Function Generator <b>Power를 끄고</b> 손을 떼라.</p>
+      <ol>
+        <li>속도 제어를 하는 중인데 <b>벨트가 체결된 상태</b>다. 교재가 장비 손상을 경고한 바로 그 상황이다.</li>
+        <li>핑거 너트를 풀고 벨트를 풀리에서 들어내 <b>금속 핀 2개 위에 걸쳐라.</b> 그 뒤 핑거 너트를 다시 조인다.</li>
+        <li>플랫폼을 레일 가운데로 되돌리고 다시 시작.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx2"><summary>벨트가 자꾸 빠지거나 플라이휠이 헛돈다</summary><div class="fixbody">
+      <ol>
+        <li>플라이휠은 <b>육각 키로 고정 나사</b>를 조여야 한다. 손으로만 끼우면 돌다가 빠진다.</li>
+        <li>벨트를 핀 위에 올린 뒤 <b>핑거 너트를 다시 조여</b> 벨트가 제자리에 머물게 해라. 절차 7이 이걸 하라는 것이다.</li>
+      </ol>
+    </div></details>
+
+  </div>
+
+  <div class="fixgrp c">데이터와 파일</div>
+  <div class="fixes">
+
+    <details class="fx3"><summary>EXPORT DATA TO FILE 버튼이 회색으로 안 눌린다</summary><div class="fixbody">
+      <ol>
+        <li><b>기록 중에는 내보낼 수 없다.</b> <span class="mono">Show / Record Data</span>를 눌러 기록을 <b>먼저 정지</b>시켜라. 그러면 버튼이 활성화된다.</li>
+        <li>순서는 항상 ① Clear → ② 대기 → ③ 정지 → ④ Export다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx3"><summary>Export한 파일이 엑셀에서 한 열에 다 붙어 나온다</summary><div class="fixbody">
+      <p><b>탭으로 구분된 텍스트 파일이라 그렇다.</b> 데이터가 깨진 게 아니다.</p>
+      <ol>
+        <li>그 열을 통째로 선택 → <b>데이터 → 텍스트 나누기</b> → 구분 기호 <b>탭</b>.</li>
+        <li>또는 엑셀을 먼저 열고 <b>파일 → 열기 → 모든 파일</b>로 지정하면 가져오기 마법사가 뜬다.</li>
+        <li>실험실에서 안 되면 <b>파일만 확실히 챙겨 나와라.</b> 집에서 얼마든지 고칠 수 있다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx3"><summary>엑셀을 열었더니 Reference 열이 전부 0이다</summary><div class="fixbody">
+      <ol>
+        <li>Trend Recorder에서 <b>Reference에 체크</b>를 안 했다. 체크하고 다시 기록.</li>
+        <li><b>Show / Record Data가 On인 상태로 기록</b>했나. Off로 둔 채 시간만 보내면 아무것도 안 쌓인다.</li>
+        <li>Clear 직후 바로 Export했다면 데이터가 없다. 지우고 → 기다리고 → 멈추고 → 내보내는 순서다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx3"><summary>데이터가 몇 줄뿐이다 / 봉우리가 하나도 안 찍혔다</summary><div class="fixbody">
+      <ol>
+        <li>기록 시간이 짧았다. Clear 후 <b>최소 5초</b>는 두고 정지해라. 1 Hz니까 5초면 봉우리 5개다.</li>
+        <li>Timebase가 <b>10 ms</b>인지 확인. 이 값이 기록 간격을 정한다.</li>
+        <li>다시 뽑는 게 제일 빠르다. Clear → 대기 → 정지 → Export 한 번 더.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx3"><summary>파일을 어디에 저장했는지 못 찾겠다</summary><div class="fixbody">
+      <ol>
+        <li>저장할 때 위치를 <b>바탕화면</b>으로 지정해라. 기본 경로에 두면 프로그램 설치 폴더 안으로 들어가 찾기 어렵다.</li>
+        <li>이미 잃어버렸으면 파일 탐색기에서 <b>수정한 날짜 기준 정렬</b>로 오늘 만든 파일을 찾아라.</li>
+        <li>파일명은 조 번호와 날짜를 넣어라. 실험실 PC는 여러 조가 같이 쓴다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx3"><summary>실험실 PC에 USB가 안 꽂히거나 막혀 있다</summary><div class="fixbody">
+      <ol>
+        <li><b>본인 메일로 첨부해 보내는 게 가장 확실하다.</b> 웹메일이면 어디서든 된다.</li>
+        <li>카카오톡 <b>나에게 보내기</b>도 파일 전송이 된다.</li>
+        <li>최후에는 화면을 폰으로 찍어라. 숫자를 읽을 수만 있으면 손으로 옮겨 그릴 수 있다.</li>
+        <li>나가기 전에 <b>받은 파일이 실제로 열리는지</b> 폰에서 확인해라.</li>
+      </ol>
+    </div></details>
+
+  </div>
+
+  <div class="fixgrp d">상황이 꼬였을 때</div>
+  <div class="fixes">
+
+    <details class="fx4"><summary>시간이 다 됐다 — 무엇부터 챙겨야 하나</summary><div class="fixbody">
+      <p>위쪽이 없으면 보고서를 못 쓰고, 아래쪽은 나중에 메울 수 있다.</p>
+      <ol>
+        <li><b>서보 Export 데이터 파일</b> — 이것만은 반드시. 그래프를 이걸로 그린다.</li>
+        <li><b>전송선로 2T 측정값</b> — 숫자 하나만 적어 와도 계산 셋을 집에서 다 한다.</li>
+        <li>오실로스코프 화면 사진 (24 m · 48 m)</li>
+        <li>서보 HMI 화면 캡처와 내가 넣은 파라미터 사진</li>
+        <li>장치 실물 사진 — 교재 도판으로 대체 가능하니 마지막</li>
+      </ol>
+    </div></details>
+
+    <details class="fx4"><summary>뭘 찍어야 할지 모르겠다</summary><div class="fixbody">
+      <p>보고서에 그림으로 들어갈 것만 찍으면 된다. 네 장이면 충분하다.</p>
+      <ol>
+        <li>오실로스코프에 <b>입사·반사 계단이 보이는 화면</b> (24 m)</li>
+        <li>같은 화면 <b>48 m 버전</b> — 2T가 두 배가 된 걸 보여준다</li>
+        <li>서보 <b>삼각파가 그려진 HMI 화면</b></li>
+        <li>서보 <b>파라미터를 입력한 화면</b> — 표 1을 대신한다</li>
+      </ol>
+      <p>화면 사진은 <b>정면에서, 플래시 끄고</b> 찍어라. 비스듬히 찍으면 눈금이 안 읽힌다.</p>
+    </div></details>
+
+    <details class="fx4"><summary>조원이 안 왔다 / 혼자다</summary><div class="fixbody">
+      <ol>
+        <li>먼저 조교에게 말해라. 다른 조에 붙여주는 경우가 많다.</li>
+        <li>혼자 하게 되면 <b>전송선로부터</b> 끝내라. 케이블 연결이 단순하고 빨리 끝난다.</li>
+        <li>서보는 조립에 손이 많이 가니 시간을 넉넉히 남겨두고 시작해라.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx4"><summary>끝내 실패해서 데이터를 못 얻었다</summary><div class="fixbody">
+      <ol>
+        <li><b>그 자리에서 조교에게 말해라.</b> 남은 시간에 다시 해볼 수 있는지, 다음 시간에 보충이 되는지가 갈린다. 집에 가서 연락하면 답이 없다.</li>
+        <li>같은 조나 옆 조 데이터를 받게 되면 <b>결과보고서에 그 사실을 밝혀라.</b> 숨기고 냈다가 걸리는 쪽이 훨씬 크게 깎인다.</li>
+        <li>실패도 결과다. <b>어떤 증상이 났고 무엇을 확인했는지</b>를 고찰에 적으면 점수를 건진다. 그래서 안 되는 화면도 사진으로 남겨두는 게 좋다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx4"><summary>장비를 망가뜨린 것 같다</summary><div class="fixbody">
+      <p class="urgent">숨기지 말고 <b>바로 조교에게 알려라.</b></p>
+      <ol>
+        <li>먼저 <b>전원을 끈다</b>(서보는 Power → 컨트롤러, 전송선로는 Base Unit).</li>
+        <li>그대로 두고 조교를 부른다. 혼자 되돌리려다 더 망가뜨리는 경우가 많다.</li>
+        <li>대부분은 벨트가 벗겨지거나 스토퍼가 밀린 정도라 그 자리에서 복구된다.</li>
+      </ol>
+    </div></details>
+
+    <details class="fx4"><summary>시간이 남았다</summary><div class="fixbody">
+      <ol>
+        <li><b>데이터를 한 번 더 뽑아라.</b> 집에 가서 첫 번째 파일이 이상한 걸 발견하는 일이 잦다. 두 벌이면 마음이 편하다.</li>
+        <li>전송선로는 <b>48 m 상태에서도 2T를 재서</b> v<sub>P</sub>가 같게 나오는지 확인해라. 그 자체로 고찰 한 문단이 된다.</li>
+        <li>맨 아래 <b>객관식 20문제</b>를 그 자리에서 풀어봐라. 틀린 게 있으면 장비가 눈앞에 있을 때 확인할 수 있다.</li>
+      </ol>
+    </div></details>
+
   </div>
 </section>
 
