@@ -1,0 +1,508 @@
+<title>서보모터 실험 현장 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#eef0f2;
+    --surface:#ffffff;
+    --surface-2:#f6f7f9;
+    --ink:#14181c;
+    --ink-2:#3d474e;
+    --ink-3:#6b767d;
+    --line:#d4d9dd;
+    --line-2:#e5e9ec;
+    --accent:#0e6b63;
+    --accent-soft:#d9ebe8;
+    --warn:#a8331a;
+    --warn-soft:#f7e2dc;
+    --ok:#2f6b2a;
+    --shadow:0 1px 2px rgba(20,24,28,.06), 0 8px 24px -16px rgba(20,24,28,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0f1316;
+      --surface:#171d21;
+      --surface-2:#1e252a;
+      --ink:#e8edf0;
+      --ink-2:#b3bfc6;
+      --ink-3:#818e96;
+      --line:#2c353b;
+      --line-2:#232b31;
+      --accent:#4fb8ab;
+      --accent-soft:#14312e;
+      --warn:#e78163;
+      --warn-soft:#3a1d15;
+      --ok:#7fbf78;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1316;
+    --surface:#171d21;
+    --surface-2:#1e252a;
+    --ink:#e8edf0;
+    --ink-2:#b3bfc6;
+    --ink-3:#818e96;
+    --line:#2c353b;
+    --line-2:#232b31;
+    --accent:#4fb8ab;
+    --accent-soft:#14312e;
+    --warn:#e78163;
+    --warn-soft:#3a1d15;
+    --ok:#7fbf78;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans KR", system-ui, -apple-system, "Malgun Gothic", sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:660px;margin:0 auto;padding:0 16px 72px}
+
+  /* ---------- header ---------- */
+  header{padding:32px 0 20px}
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;
+  }
+  h1{
+    font-size:clamp(28px,7vw,40px);line-height:1.15;margin:8px 0 10px;
+    font-weight:700;letter-spacing:-.02em;text-wrap:balance;
+  }
+  .sub{color:var(--ink-2);font-size:15px;margin:0}
+
+  /* ---------- progress ---------- */
+  .bar{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    padding:10px 0 12px;
+    border-bottom:1px solid var(--line-2);
+    display:flex;align-items:center;gap:12px;
+  }
+  .track{flex:1;height:6px;background:var(--line-2);border-radius:99px;overflow:hidden}
+  .fill{height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width .25s ease}
+  .count{
+    font-family:"IBM Plex Mono", monospace;font-size:12px;font-weight:600;
+    color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  .reset{
+    font-family:"IBM Plex Mono", monospace;font-size:11px;
+    background:none;border:1px solid var(--line);color:var(--ink-3);
+    padding:3px 8px;border-radius:5px;cursor:pointer;
+  }
+  .reset:hover{color:var(--ink);border-color:var(--ink-3)}
+  .reset:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* ---------- sections ---------- */
+  section{margin-top:36px}
+  h2{
+    font-size:13px;font-family:"IBM Plex Mono", monospace;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+    margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+  h3{font-size:17px;font-weight:700;margin:24px 0 8px;letter-spacing:-.01em}
+  p{margin:0 0 12px;color:var(--ink-2)}
+  strong{color:var(--ink);font-weight:600}
+  code{
+    font-family:"IBM Plex Mono", monospace;font-size:.88em;
+    background:var(--surface-2);border:1px solid var(--line-2);
+    padding:1px 5px;border-radius:4px;color:var(--ink);white-space:nowrap;
+  }
+
+  /* ---------- alert: the two things that break gear ---------- */
+  .alert{
+    background:var(--warn-soft);
+    border-left:4px solid var(--warn);
+    border-radius:0 8px 8px 0;
+    padding:14px 16px;margin:0 0 12px;
+  }
+  .alert .tag{
+    font-family:"IBM Plex Mono", monospace;font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--warn);display:block;margin-bottom:4px;
+  }
+  .alert p{margin:0;color:var(--ink);font-size:15px}
+  .alert p + p{margin-top:8px}
+
+  .note{
+    background:var(--accent-soft);
+    border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:14px 16px;margin:0 0 12px;
+  }
+  .note .tag{
+    font-family:"IBM Plex Mono", monospace;font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;
+  }
+  .note p{margin:0;color:var(--ink);font-size:15px}
+
+  /* ---------- concept grid ---------- */
+  .concepts{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .concept{background:var(--surface);padding:14px 16px}
+  .concept dt{font-weight:700;font-size:15px;margin-bottom:3px}
+  .concept dd{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6}
+
+  /* ---------- parts table ---------- */
+  .parts{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:560px){.parts{grid-template-columns:1fr 1fr}}
+  .part{
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .part h4{
+    margin:0 0 8px;font-size:14px;font-weight:700;
+    font-family:"IBM Plex Mono", monospace;letter-spacing:.02em;color:var(--accent);
+  }
+  .part ul{margin:0;padding-left:16px;color:var(--ink-2);font-size:14px;line-height:1.75}
+  .part li::marker{color:var(--ink-3)}
+
+  /* ---------- steps ---------- */
+  ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .step{
+    display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:13px 15px;cursor:pointer;transition:border-color .15s, opacity .15s;
+  }
+  .step:hover{border-color:var(--accent)}
+  .step:has(input:checked){opacity:.5;border-color:var(--line-2)}
+  .step:has(input:checked) .body{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+  .step input{
+    appearance:none;-webkit-appearance:none;margin:0;
+    width:22px;height:22px;flex:none;margin-top:2px;
+    border:2px solid var(--line);border-radius:6px;background:var(--surface);
+    cursor:pointer;position:relative;transition:.15s;
+  }
+  .step input:checked{background:var(--accent);border-color:var(--accent)}
+  .step input:checked::after{
+    content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid var(--surface);border-width:0 2.5px 2.5px 0;transform:rotate(42deg);
+  }
+  .step input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .step .body{font-size:15px;line-height:1.6;color:var(--ink)}
+  .step .num{
+    font-family:"IBM Plex Mono", monospace;font-size:11px;font-weight:600;
+    color:var(--ink-3);display:block;margin-bottom:2px;letter-spacing:.06em;
+  }
+  .step .why{display:block;font-size:13.5px;color:var(--ink-3);margin-top:4px;line-height:1.55}
+
+  .phase{
+    font-family:"IBM Plex Mono", monospace;font-size:12px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+    margin:22px 0 10px;display:flex;align-items:center;gap:10px;
+  }
+  .phase::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .phase:first-child{margin-top:0}
+
+  /* ---------- param table ---------- */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line-2)}
+  tr:last-child td{border-bottom:none}
+  th{
+    font-family:"IBM Plex Mono", monospace;font-size:11px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+    background:var(--surface-2);
+  }
+  td{color:var(--ink-2)}
+  td:first-child{color:var(--ink);font-weight:500}
+  .mono{font-family:"IBM Plex Mono", monospace;font-variant-numeric:tabular-nums}
+
+  /* ---------- take-home ---------- */
+  .haul{display:flex;flex-direction:column;gap:8px}
+  .haul label{
+    display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:13px 15px;cursor:pointer;
+  }
+  .haul label:has(input:checked){opacity:.5}
+  .haul label:has(input:checked) span{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+  .haul input{
+    appearance:none;-webkit-appearance:none;margin:0;
+    width:22px;height:22px;flex:none;margin-top:1px;
+    border:2px solid var(--line);border-radius:6px;background:var(--surface);
+    cursor:pointer;position:relative;
+  }
+  .haul input:checked{background:var(--ok);border-color:var(--ok)}
+  .haul input:checked::after{
+    content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid var(--surface);border-width:0 2.5px 2.5px 0;transform:rotate(42deg);
+  }
+  .haul input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .haul span{font-size:15px;color:var(--ink)}
+  .haul .why{display:block;font-size:13.5px;color:var(--ink-3);margin-top:3px}
+
+  /* ---------- Q&A ---------- */
+  .qa{display:flex;flex-direction:column;gap:10px}
+  .q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .q .prompt{font-weight:600;font-size:15px;margin:0 0 8px;color:var(--ink)}
+  .q .ans{margin:0;font-size:14.5px;color:var(--ink-2)}
+  .q .ans::before{
+    content:"답 ";font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+    letter-spacing:.1em;color:var(--accent);
+  }
+
+  /* ---------- waveform sketch ---------- */
+  figure{margin:0 0 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-size:13.5px;color:var(--ink-3);margin-top:10px;line-height:1.6}
+
+  footer{
+    margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--ink-3);
+  }
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">응용전기전자실험 II · 서보모터</div>
+  <h1>실험실 가서 이대로만 하면 됨</h1>
+  <p class="sub">계산 없음. 조립하고, 값 넣고, 버튼 누르고, 엑셀 파일 뽑아오면 끝. 체크박스는 눌러둔 채로 저장되니까 폰으로 열어놓고 하나씩 지워라.</p>
+</header>
+
+<div class="bar">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="count" id="count">0 / 0</div>
+  <button class="reset" id="reset" type="button">초기화</button>
+</div>
+
+<section>
+  <h2>먼저 확인 — 오늘 서보모터만 하는 게 아닐 수 있다</h2>
+  <div class="note">
+    <span class="tag">확인할 것</span>
+    <p>같은 수업 족보에서 결과보고서가 <strong>「전송선로 및 서보모터」</strong> 한 편으로 묶여 있고, 전송선로 예비보고서 날짜도 서보모터와 같다. 오늘 <strong>전송선로를 같이 할 가능성이 크다.</strong> 전송선로는 회로 연결하고 선 길이(0·6·12·18·24 m)를 바꿔가며 오실로스코프 파형을 찍는 실험이다. 가기 전에 조교나 동기한테 한 번만 물어봐라.</p>
+  </div>
+</section>
+
+<section>
+  <h2>30초 개념 — 이것만 알면 조교가 물어봐도 안 막힘</h2>
+  <dl class="concepts">
+    <div class="concept">
+      <dt>서보 시스템이 뭐냐</dt>
+      <dd>"여기로 가"라고 시키면 <strong>진짜 거기 갔는지 스스로 확인해서 다시 고치는</strong> 모터. 일반 모터는 시키는 대로 돌기만 하고 결과를 모른다. 서보는 센서로 결과를 되읽어서(피드백) 오차만큼 더 밀거나 덜 민다.</dd>
+    </div>
+    <div class="concept">
+      <dt>인코더(encoder)</dt>
+      <dd>그 "확인"을 담당하는 센서. 축이 얼마나 돌았는지 톱니 세듯 세서 알려준다. 이 장비엔 두 개 — <strong>모터 축에 붙은 것</strong>(모터가 얼마나 돌았나)과 <strong>레일에 붙은 것</strong>(플랫폼이 실제로 어디까지 갔나).</dd>
+    </div>
+    <div class="concept">
+      <dt>오차(Error)</dt>
+      <dd><code>가라고 시킨 값 − 실제 간 값</code>. 이 숫자를 0으로 만드는 게 제어기가 하는 일 전부다.</dd>
+    </div>
+    <div class="concept">
+      <dt>PID 제어기</dt>
+      <dd>오차를 세 가지 방식으로 보고 힘을 정한다. <strong>P</strong>는 "지금 얼마나 틀렸나"(<code>Kp × Error</code>), <strong>I</strong>는 "여태 틀린 걸 다 합치면"(<code>Error Sum/ti</code>), <strong>D</strong>는 "틀린 정도가 빨라지나 느려지나"(<code>td × Delta Error</code>). 셋을 더한 게 최종 출력.</dd>
+    </div>
+    <div class="concept">
+      <dt>Position control vs Speed control</dt>
+      <dd>위치 제어는 <strong>"몇 cm 지점으로 가"</strong>, 속도 제어는 <strong>"몇 rpm으로 돌아"</strong>. 속도 제어는 모터 축 인코더 하나만 쓴다(레일 위치는 볼 필요가 없으니까).</dd>
+    </div>
+    <div class="concept">
+      <dt>Device Controlled vs Host Controlled</dt>
+      <dd>제어 계산을 <strong>장비 안 마이크로컨트롤러가 하느냐(device)</strong>, <strong>PC가 하느냐(host)</strong>의 차이. 장비가 직접 하면 계산이 훨씬 빠르다. 오늘은 Device Controlled를 쓴다.</dd>
+    </div>
+  </dl>
+</section>
+
+<section>
+  <h2>장비 이름표 — 보고서에 그대로 쓸 구성품</h2>
+  <div class="parts">
+    <div class="part">
+      <h4>Mechanical Unit</h4>
+      <ul>
+        <li>DC brush-type 서보모터</li>
+        <li>모터 축 incremental encoder</li>
+        <li>rail encoder</li>
+        <li>platform (레일 위 이동체)</li>
+        <li>belt drive · pulley</li>
+        <li>flywheel (관성 원판)</li>
+        <li>friction brake</li>
+      </ul>
+    </div>
+    <div class="part">
+      <h4>Digital Servo Controller</h4>
+      <ul>
+        <li>DC 모터 파워 앰프</li>
+        <li>마이크로컨트롤러</li>
+        <li>ADC · DAC</li>
+        <li>USB 인터페이스</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>장비 부수는 방법 두 가지 — 이것만 피해라</h2>
+  <div class="alert">
+    <span class="tag">위험 1 · 벨트</span>
+    <p><strong>속도 제어(Speed control) 실험을 할 땐 벨트를 반드시 풀어서 플랫폼을 분리해라.</strong> 교재 원문에 "벨트가 체결된 상태에서 속도 제어 실험을 하면 장치가 손상될 수 있다"고 박혀 있다. 속도 제어는 모터를 계속 한 방향으로 쌩쌩 돌리는데, 플랫폼이 붙어 있으면 레일 끝까지 가서 그대로 처박는다.</p>
+  </div>
+  <div class="alert">
+    <span class="tag">위험 2 · 브레이크</span>
+    <p><strong>friction brake가 풀려 있는지 먼저 봐라.</strong> 잠긴 채로 돌리면 모터는 전류만 먹고 안 움직인다. 실험 중에 그래프가 갑자기 평평한 직선이 되면 십중팔구 브레이크다 — 족보의 선배 그래프 뒷부분이 딱 그 상태로 남아 있다.</p>
+  </div>
+</section>
+
+<section>
+  <h2>실험 순서</h2>
+
+  <div class="phase">A · 하드웨어 조립</div>
+  <ol class="steps" id="steps">
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 01</span>서보모터 전원 케이블과 incremental encoder 케이블을 <strong>mechanical unit ↔ 서보 컨트롤러</strong>에 연결<span class="why">이 둘이 연결돼야 컨트롤러가 모터를 돌리고 위치를 되읽는다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 02</span>USB 케이블로 <strong>서보 컨트롤러 ↔ PC</strong> 연결</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 03</span>플랫폼을 레일 따라 앞뒤로 밀어보고 <strong>가운데에 맞춰 둔다</strong><span class="why">한쪽에 치우쳐 있으면 실험 시작하자마자 끝에 부딪힌다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 04</span><strong>flywheel을 샤프트에 끼우고</strong> 육각 키로 고정 나사를 조인다<span class="why">관성을 주는 원판. 헐겁게 두면 돌다가 빠진다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 05</span>장치 <strong>오른쪽 끝 핑거 너트를 푼다</strong> → 벨트가 느슨해짐</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 06</span>느슨해진 벨트를 <strong>풀리에서 들어올려 강철 핀 2개 위에 걸친다</strong> → 플랫폼 분리 완료<span class="why">이 상태가 "플랫폼 해제". 속도 제어 실험은 반드시 이 상태여야 한다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 07</span>벨트가 제자리에 있게 <strong>핑거 너트를 다시 조인다</strong></span></label></li>
+  </ol>
+
+  <div class="phase">B · 소프트웨어</div>
+  <ol class="steps">
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 08</span>서보 컨트롤러와 PC 전원을 켜고 바탕화면 <code>Digital Servo Controller</code> 실행</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 09</span><strong>Position Loop → Device Controlled</strong> 클릭. 기본 위치 제어 화면이 뜨는 것 확인<span class="why">여기서 기본값 화면을 사진으로 한 장 찍어둬라 (보고서용)</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 10</span><strong>Exit</strong>를 눌러 첫 화면으로 복귀</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 11</span><strong>Speed Loop → Device Controlled</strong> 클릭. 인코더가 모터 축 하나만 잡히는 것 확인</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 12</span>교재 표에 있는 값대로 <strong>Function Generator · PID 파라미터를 입력</strong><span class="why">교재 표를 사진으로 찍어둬라. 결과보고서에 이 표가 그대로 들어간다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 13</span><strong>함수 발생 전원 버튼</strong>을 누른다 → 화면에 삼각파가 뜨고 플랫폼이 좌우로 움직이기 시작</span></label></li>
+  </ol>
+
+  <div class="phase">C · 데이터 뽑기 — 여기 망치면 보고서 못 씀</div>
+  <ol class="steps">
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 14</span><code>Clear Data History</code>를 눌러 이전 기록 삭제<span class="why">안 지우면 앞사람 데이터가 섞여 들어온다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 15</span>삼각파가 <strong>완전한 한 주기 이상</strong> 그려질 때까지 기다린다<span class="why">올라갔다 내려오는 게 최소 2~3번은 찍혀야 그래프가 그림이 된다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 16</span><code>Show and Record Data</code>를 눌러 기록을 멈춘다</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 17</span><code>Export Data to File</code> → 파일 이름과 저장 위치 지정해서 저장</span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 18</span>저장한 파일을 <strong>엑셀로 열어서 진짜 열렸는지 확인</strong>하고, 메일이나 USB로 내 것에 복사<span class="why">실험실 PC에 두고 나오면 끝장이다. 나오기 전에 반드시</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">STEP 19</span>엑셀에서 <strong>가로축 TimeStamp, 세로축 Reference</strong>로 꺾은선 그래프를 그려본다<span class="why">삼각파 모양이 나오면 성공. 여기까지 확인하고 나와라</span></span></label></li>
+  </ol>
+</section>
+
+<section>
+  <h2>엑셀 파일 열면 이런 열들이 있다</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>열 이름</th><th>뜻</th></tr></thead>
+      <tbody>
+        <tr><td>TimeStamp</td><td>시간. 그래프 가로축으로 쓴다</td></tr>
+        <tr><td>Reference</td><td>"이만큼 가라"고 시킨 목표값. <strong>세로축은 보통 이것</strong></td></tr>
+        <tr><td>Position</td><td>실제로 간 위치 (레일 위치 또는 축의 각도)</td></tr>
+        <tr><td>Speed</td><td>모터 축의 실제 속도</td></tr>
+        <tr><td>Current</td><td>파워 앰프가 모터에 흘려준 전류</td></tr>
+        <tr><td>Voltage</td><td>파워 앰프가 모터에 걸어준 전압</td></tr>
+        <tr><td>Error</td><td><span class="mono">Reference − Position</span>. 목표와 실제의 차이</td></tr>
+        <tr><td>Total controller output</td><td>P·I·D 세 항을 다 더한 최종 제어 출력</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>그래프 읽는 법 — 결과보고서 고찰이 여기서 나온다</h2>
+  <figure>
+    <svg viewBox="0 0 600 210" role="img" aria-label="삼각파 그래프 개념도: 톱니 모양으로 오르내리다가 뒤쪽에서 수평 직선이 되는 파형">
+      <line x1="46" y1="180" x2="580" y2="180" stroke="var(--line)" stroke-width="1.5" fill="none"/>
+      <line x1="46" y1="16" x2="46" y2="180" stroke="var(--line)" stroke-width="1.5" fill="none"/>
+      <line x1="46" y1="45" x2="580" y2="45" stroke="var(--line-2)" stroke-width="1" stroke-dasharray="3 4" fill="none"/>
+      <line x1="46" y1="145" x2="580" y2="145" stroke="var(--line-2)" stroke-width="1" stroke-dasharray="3 4" fill="none"/>
+      <polyline points="46,145 116,45 186,145 256,45 326,145 396,45 430,94"
+                fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <polyline points="430,94 580,94" fill="none" stroke="var(--warn)" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="38" y="49" fill="var(--ink-3)" font-size="11" font-family="IBM Plex Mono, monospace" text-anchor="end">+50%</text>
+      <text x="38" y="149" fill="var(--ink-3)" font-size="11" font-family="IBM Plex Mono, monospace" text-anchor="end">−50%</text>
+      <text x="46" y="199" fill="var(--ink-3)" font-size="11" font-family="IBM Plex Mono, monospace">0</text>
+      <text x="575" y="199" fill="var(--ink-3)" font-size="11" font-family="IBM Plex Mono, monospace" text-anchor="end">TimeStamp →</text>
+      <text x="160" y="30" fill="var(--accent)" font-size="12" font-family="IBM Plex Mono, monospace">정상 동작 구간</text>
+      <text x="505" y="82" fill="var(--warn)" font-size="12" font-family="IBM Plex Mono, monospace" text-anchor="middle">멈춘 구간</text>
+    </svg>
+    <figcaption>일정한 주기로 같은 기울기로 오르내리는 삼각파가 나오면 정상. 뒤쪽 <strong>수평 직선 구간은 플랫폼이 안 움직인 것</strong>(브레이크 잠김 또는 정지).</figcaption>
+  </figure>
+
+  <h3>쓸 만한 고찰 세 줄</h3>
+  <p><strong>① 진폭이 입력한 대로 나온다.</strong> Amplitude를 50%로 넣으면 출력도 50%로 유지된다. 폐루프(closed loop)라서 출력이 피드백으로 되돌아와 오차를 계속 깎아내기 때문이다. 열린 루프였으면 마찰이나 부하 때문에 점점 못 미쳤을 것이다.</p>
+  <p><strong>② 주기가 입력 주파수의 역수 그대로 나온다.</strong> 시킨 대로 따라간다는 뜻이고, 이게 서보 시스템의 추종 성능이다.</p>
+  <p><strong>③ 기울기가 구간마다 미묘하게 다르다.</strong> 왕복 운동이라 방향을 바꿀 때마다 관성 때문에 제동 전류가 늘고, 다시 가속하느라 전류가 또 필요하다. 제어기가 그때그때 출력을 보정하니 전압 기울기도 일정하지 않다. — <em>선배 보고서들 중 이 논지가 제일 낫다.</em></p>
+</section>
+
+<section>
+  <h2>조교가 물어볼 만한 것</h2>
+  <div class="qa">
+    <div class="q">
+      <p class="prompt">Host controlled 모드와 Device controlled 모드의 차이는?</p>
+      <p class="ans">제어 알고리즘을 어디서 계산하느냐의 차이다. Host는 PC가, Device는 장비 내부 전용 마이크로컨트롤러가 돌린다. Device 쪽이 실행 시간이 짧아 더 빠르게 응답한다.</p>
+    </div>
+    <div class="q">
+      <p class="prompt">레일 인코더와 모터 축 인코더의 차이는?</p>
+      <p class="ans">측정 대상이 다르다. 모터 축 인코더는 모터가 회전한 각도·속도를, 레일 인코더는 벨트를 거쳐 실제로 플랫폼이 이동한 직선 위치를 읽는다. 그래서 벨트가 미끄러지거나 늘어나면 둘의 값이 어긋난다. 속도 제어 모드에서는 모터 축 인코더 하나만 쓴다.</p>
+    </div>
+    <div class="q">
+      <p class="prompt">플랫폼을 분리해야 하는 쪽은 speed control인가 position control인가?</p>
+      <p class="ans"><strong>Speed control이다.</strong> 교재에 "속도 조절 실험을 수행할 때는 플랫폼을 해제해야 하며, 벨트가 체결된 상태에서 속도 제어 실험을 하면 장치가 손상될 수 있다"고 명시돼 있다.</p>
+    </div>
+  </div>
+  <div class="alert" style="margin-top:12px">
+    <span class="tag">족보 오답 주의</span>
+    <p>돌아다니는 예비보고서 족보 중에는 세 번째 질문 답이 <strong>"Position control을 사용"</strong>이라고 적혀 있는데 <strong>교재와 반대다.</strong> 그대로 베끼면 감점당한다.</p>
+  </div>
+</section>
+
+<section>
+  <h2>나오기 전에 챙겼는지 확인</h2>
+  <div class="haul" id="haul">
+    <label><input type="checkbox"><span>Export한 데이터 파일 (내 USB / 내 메일로)<span class="why">이거 없으면 결과보고서를 아예 못 쓴다. 1순위</span></span></label>
+    <label><input type="checkbox"><span>삼각파가 뜬 HMI 화면 캡처<span class="why">보고서 "그림 1"로 들어간다</span></span></label>
+    <label><input type="checkbox"><span>내가 입력한 파라미터 값 (Kp, ti, td, Amplitude, Frequency) 사진<span class="why">보고서 "표 1". 기억으로 복원 못 한다</span></span></label>
+    <label><input type="checkbox"><span>Mechanical unit · 서보 컨트롤러 실물 사진<span class="why">실험 장치 소개에 넣으면 성의 있어 보인다</span></span></label>
+    <label><input type="checkbox"><span>같은 조 사람 연락처<span class="why">나중에 값 하나 빠진 게 발견된다. 반드시</span></span></label>
+    <label><input type="checkbox"><span>결과보고서 제출 기한 확인</span></label>
+  </div>
+</section>
+
+<footer>
+  출처 — 응용전기전자실험(II) 교재 및 선배 예비·결과보고서 4편. 파라미터 실제 수치는 교재 표를 따라라. 브라우저에 체크 상태가 저장된다.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "servo-bench-v1";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type=checkbox]'));
+  var fill = document.getElementById('fill');
+  var count = document.getElementById('count');
+
+  function load(){
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ saved = []; }
+    if (Object.prototype.toString.call(saved) !== "[object Array]") saved = [];
+    boxes.forEach(function(b,i){ b.checked = !!saved[i]; });
+  }
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify(boxes.map(function(b){ return b.checked; }))); } catch(e){}
+  }
+  function render(){
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    count.textContent = done + " / " + boxes.length;
+    fill.style.width = (boxes.length ? (done / boxes.length * 100) : 0) + "%";
+  }
+
+  load();
+  render();
+
+  boxes.forEach(function(b){
+    b.addEventListener('change', function(){ save(); render(); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    save(); render();
+  });
+})();
+</script>

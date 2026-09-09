@@ -1,0 +1,12 @@
+*.pem
+*.key
+.env
+.env.*
+secrets.json
+*.pdf
+*.hwp
+*.docx
+*.xlsx
+*.csv
+Thumbs.db
+.DS_Store
