@@ -255,6 +255,7 @@
     <a href="#prep">준비</a>
     <a href="#power">전원</a>
     <a href="#wire">결선</a>
+    <a href="#wire2">선 연결</a>
     <a href="#run">측정</a>
     <a href="#fix">고장</a>
     <a href="#quiz">문제</a>
@@ -432,6 +433,255 @@
   <div class="alert" style="margin-top:12px">
     <span class="tag">결선 끝나고 전원 넣기 전</span>
     <p>① 전류계가 <strong>직렬</strong>인가 ② 전압계가 <strong>병렬</strong>인가 ③ 계자 권선이 전기자와 <strong>병렬</strong>인가 ④ <strong>GND는 아무 데도 안 물렸나</strong> ⑤ LOAD CONTROL이 <strong>MIN(완전 반시계)</strong>인가. 이 다섯 개만 보고 전원을 올려라.</p>
+    <p style="margin-top:10px"><a href="#wire2" style="color:var(--accent);font-weight:600">→ 선을 하나씩 어디에 꽂는지는 바로 아래에 자세히 있다</a></p>
+  </div>
+</section>
+
+<section id="wire2">
+  <h2>선 연결 — 아주 쉽게, 하나씩</h2>
+
+  <h3>먼저 이것만 알고 가자</h3>
+  <dl class="concepts">
+    <div class="concept"><dt>전기는 물이라고 생각해라</dt>
+      <dd>전원의 <strong>7번 구멍이 수도꼭지</strong>(물이 나오는 곳), <strong>N번 구멍이 하수구</strong>(물이 돌아가는 곳)다. 물은 반드시 <strong>나갔다가 한 바퀴 돌아서 다시 들어와야</strong> 한다. 중간에 길이 끊기면 아무 일도 안 생긴다.</dd></div>
+    <div class="concept"><dt>모터 안에는 물길이 두 개 있다</dt>
+      <dd>하나는 <strong>바퀴를 돌리는 길</strong>(전기자, 단자 <strong>1–2</strong>), 하나는 <strong>자석을 만드는 길</strong>(계자, 단자 <strong>5–6</strong>). 자석이 있어야 바퀴가 밀려서 돈다. 둘 다 물이 흘러야 모터가 움직인다.</dd></div>
+    <div class="concept"><dt>'분권'은 두 길을 나란히 놓는다는 뜻</dt>
+      <dd>두 길을 <strong>나란히</strong> 두면 분권, <strong>한 줄로 이어</strong> 두면 직권이다. 오늘은 <strong>나란히</strong>다. 그래서 수도꼭지에서 나온 물이 <strong>갈라져서</strong> 두 길로 나뉘어 흐르고, 끝에서 다시 <strong>합쳐져</strong> 하수구로 간다.</dd></div>
+    <div class="concept"><dt>전류계는 중간에 끼운다</dt>
+      <dd>물이 <strong>얼마나 많이</strong> 흐르는지 재는 계기다. 물길 <strong>한가운데를 끊고 그 사이에 끼워</strong> 물이 계기를 통과하게 해야 한다. 이걸 <strong>직렬</strong>이라고 한다.</dd></div>
+    <div class="concept"><dt>전압계는 양쪽에 걸친다</dt>
+      <dd>물을 <strong>얼마나 세게</strong> 미는지 재는 계기다. 길을 끊지 않고 <strong>양쪽 끝에 걸쳐만</strong> 놓는다. 이걸 <strong>병렬</strong>이라고 한다.</dd></div>
+    <div class="concept"><dt>절대 바꾸면 안 되는 것</dt>
+      <dd><strong>전류계를 걸쳐만 놓으면 안 된다.</strong> 물이 모터를 안 거치고 계기로만 콸콸 쏟아져서, 그 자리에서 퓨즈가 끊어진다. 전류계는 <strong>무조건 끼우기</strong>, 전압계는 <strong>무조건 걸치기</strong>다.</dd></div>
+  </dl>
+
+  <h3>이렇게 생긴 그림을 만들면 된다</h3>
+  <div class="tablewrap" style="padding:4px">
+  <figure class="sketch" style="min-width:660px;border:none;padding:6px;margin:0">
+    <svg viewBox="0 0 800 575" role="img" aria-label="분권 직류전동기 결선도. 전원 7번에서 나온 선이 전류계를 지나 모터 단자 1번과 5번으로 갈라지고, 전기자 1-2와 계자 5-6-7-8을 지나 전원 N번으로 돌아온다. 전압계는 7번과 N번 사이에 걸쳐 있고, 120Vac 1번과 N번은 동력계로 간다.">
+      <defs>
+        <marker id="wa" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--warn)"/></marker>
+      </defs>
+
+      <!-- 전원 -->
+      <rect x="28" y="62" width="82" height="330" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="69" y="215" fill="var(--ink-3)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">POWER</text>
+      <text x="69" y="231" fill="var(--ink-3)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">SUPPLY</text>
+      <text x="69" y="252" fill="var(--ink-2)" font-size="11.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">0~120 Vdc</text>
+
+      <!-- 배선: 나가는 쪽(빨강) -->
+      <path d="M110,100 H330" stroke="var(--warn)" stroke-width="3" fill="none"/>
+      <path d="M330,100 V300 H350" stroke="var(--warn)" stroke-width="3" fill="none"/>
+      <path d="M455,300 H500" stroke="var(--warn)" stroke-width="3" fill="none"/>
+      <!-- 돌아오는 쪽(파랑) -->
+      <path d="M585,100 H645 V360" stroke="var(--alt)" stroke-width="3" fill="none"/>
+      <path d="M585,300 H620 V360" stroke="var(--alt)" stroke-width="3" fill="none"/>
+      <path d="M110,360 H645" stroke="var(--alt)" stroke-width="3" fill="none"/>
+      <!-- 전압계(회색) -->
+      <path d="M170,100 V204" stroke="var(--ink-3)" stroke-width="2.5" fill="none"/>
+      <path d="M170,246 V360" stroke="var(--ink-3)" stroke-width="2.5" fill="none"/>
+
+      <!-- 전류계 -->
+      <circle cx="255" cy="100" r="21" fill="var(--surface)" stroke="var(--warn)" stroke-width="2.5"/>
+      <text x="255" y="106" fill="var(--warn)" font-size="16" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600">A</text>
+      <text x="255" y="66" fill="var(--ink-3)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">전류계 0~5 A</text>
+      <text x="228" y="92" fill="var(--warn)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">+</text>
+      <text x="282" y="92" fill="var(--ink-3)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">−</text>
+      <!-- 전압계 -->
+      <circle cx="170" cy="225" r="21" fill="var(--surface)" stroke="var(--ink-3)" stroke-width="2.5"/>
+      <text x="170" y="231" fill="var(--ink-2)" font-size="16" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600">V</text>
+      <text x="118" y="200" fill="var(--ink-3)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">전압계</text>
+      <text x="118" y="215" fill="var(--ink-3)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">0~200 V</text>
+
+      <!-- EMS 8211 -->
+      <rect x="320" y="52" width="292" height="296" rx="6" fill="none" stroke="var(--ink-3)" stroke-width="1.6" stroke-dasharray="7 5"/>
+      <text x="466" y="42" fill="var(--ink-2)" font-size="12.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600">EMS 8211 · 분권 결선</text>
+
+      <!-- 전기자 1-2 -->
+      <path d="M361,100 H444" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <path d="M496,100 H574" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <circle cx="470" cy="100" r="26" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2.5"/>
+      <rect x="441" y="93" width="8" height="14" fill="var(--ink-2)"/>
+      <rect x="491" y="93" width="8" height="14" fill="var(--ink-2)"/>
+      <text x="470" y="105" fill="var(--ink-2)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">M</text>
+      <text x="470" y="146" fill="var(--ink-3)" font-size="11.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">전기자 — 바퀴 돌리는 길</text>
+
+      <!-- 3-4 미사용 -->
+      <path d="M361,200 H380" stroke="var(--line)" stroke-width="2" fill="none"/>
+      <path d="M380,200 q8,-11 16,0 q8,11 16,0 q8,-11 16,0 q8,11 16,0" stroke="var(--line)" stroke-width="2" fill="none"/>
+      <path d="M444,200 H459" stroke="var(--line)" stroke-width="2" fill="none"/>
+      <text x="530" y="205" fill="var(--line)" font-size="11.5" font-family="IBM Plex Mono, monospace">오늘 안 씀</text>
+
+      <!-- 계자 5-6 + 가변저항 7-8 -->
+      <path d="M361,300 H375" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <path d="M375,300 q9,-12 18,0 q9,12 18,0 q9,-12 18,0 q9,12 18,0" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <path d="M447,300 H444" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <rect x="513" y="289" width="52" height="22" rx="3" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2.5"/>
+      <path d="M516,315 L562,285" stroke="var(--ink-2)" stroke-width="2" fill="none" marker-end="url(#wa)"/>
+      <path d="M511,300 H513" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <path d="M565,300 H574" stroke="var(--ink-2)" stroke-width="2.5" fill="none"/>
+      <text x="415" y="345" fill="var(--ink-3)" font-size="11.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">계자 — 자석 만드는 길</text>
+      <text x="539" y="272" fill="var(--ink-3)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">가변저항</text>
+
+      <!-- 단자 동그라미 -->
+      <g font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" text-anchor="middle">
+        <circle cx="350" cy="100" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="350" y="105" fill="var(--ink)">1</text>
+        <circle cx="585" cy="100" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="585" y="105" fill="var(--ink)">2</text>
+        <circle cx="350" cy="200" r="11" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="350" y="205" fill="var(--line)">3</text>
+        <circle cx="470" cy="200" r="11" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="470" y="205" fill="var(--line)">4</text>
+        <circle cx="350" cy="300" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="350" y="305" fill="var(--ink)">5</text>
+        <circle cx="455" cy="300" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="455" y="305" fill="var(--ink)">6</text>
+        <circle cx="500" cy="300" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="500" y="305" fill="var(--ink)">7</text>
+        <circle cx="585" cy="300" r="11" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="2"/><text x="585" y="305" fill="var(--ink)">8</text>
+        <circle cx="110" cy="100" r="11" fill="var(--surface)" stroke="var(--warn)" stroke-width="2.5"/><text x="110" y="105" fill="var(--warn)">7</text>
+        <circle cx="110" cy="360" r="11" fill="var(--surface)" stroke="var(--alt)" stroke-width="2.5"/><text x="110" y="365" fill="var(--alt)">N</text>
+      </g>
+      <text x="110" y="82" fill="var(--warn)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">＋</text>
+      <text x="110" y="385" fill="var(--alt)" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">−</text>
+      <circle cx="330" cy="100" r="4" fill="var(--warn)"/>
+      <circle cx="170" cy="100" r="4" fill="var(--ink-3)"/>
+      <circle cx="170" cy="360" r="4" fill="var(--ink-3)"/>
+      <circle cx="620" cy="360" r="4" fill="var(--alt)"/>
+
+      <!-- 동력계 -->
+      <rect x="678" y="150" width="100" height="140" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="728" y="205" fill="var(--ink-3)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">동력계</text>
+      <text x="728" y="222" fill="var(--ink-3)" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">EMS 8911</text>
+      <text x="728" y="308" fill="var(--ink-3)" font-size="10.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">축으로 연결</text>
+      <text x="728" y="322" fill="var(--ink-3)" font-size="10.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">(선 아님)</text>
+
+      <!-- 구분선 -->
+      <line x1="28" y1="412" x2="778" y2="412" stroke="var(--line-2)" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <text x="28" y="434" fill="var(--ink-3)" font-size="11.5" font-family="IBM Plex Mono, monospace">동력계 전원 — 위 회로와 상관없는 별개의 두 선</text>
+
+      <!-- 교류부 -->
+      <rect x="28" y="448" width="82" height="100" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="69" y="503" fill="var(--ink-2)" font-size="11.5" text-anchor="middle" font-family="IBM Plex Mono, monospace">120 Vac</text>
+      <path d="M110,470 H678" stroke="var(--ok)" stroke-width="3" fill="none"/>
+      <path d="M110,528 H700 V290" stroke="var(--ok)" stroke-width="3" fill="none"/>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" text-anchor="middle">
+        <circle cx="110" cy="470" r="11" fill="var(--surface)" stroke="var(--ok)" stroke-width="2.5"/><text x="110" y="475" fill="var(--ok)">1</text>
+        <circle cx="110" cy="528" r="11" fill="var(--surface)" stroke="var(--ok)" stroke-width="2.5"/><text x="110" y="533" fill="var(--ok)">N</text>
+      </g>
+
+      <!-- 선 번호 배지 -->
+      <g font-family="IBM Plex Mono, monospace" font-size="12" font-weight="700" text-anchor="middle">
+        <circle cx="200" cy="100" r="12" fill="var(--warn)"/><text x="200" y="105" fill="#fff">1</text>
+        <circle cx="303" cy="100" r="12" fill="var(--warn)"/><text x="303" y="105" fill="#fff">2</text>
+        <circle cx="330" cy="215" r="12" fill="var(--warn)"/><text x="330" y="220" fill="#fff">3</text>
+        <circle cx="478" cy="300" r="12" fill="var(--warn)"/><text x="478" y="305" fill="#fff">4</text>
+        <circle cx="645" cy="140" r="12" fill="var(--alt)"/><text x="645" y="145" fill="#fff">5</text>
+        <circle cx="620" cy="332" r="12" fill="var(--alt)"/><text x="620" y="337" fill="#fff">6</text>
+        <circle cx="170" cy="150" r="12" fill="var(--ink-3)"/><text x="170" y="155" fill="#fff">7</text>
+        <circle cx="170" cy="322" r="12" fill="var(--ink-3)"/><text x="170" y="327" fill="#fff">8</text>
+        <circle cx="330" cy="470" r="12" fill="var(--ok)"/><text x="330" y="475" fill="#fff">9</text>
+        <circle cx="330" cy="528" r="12" fill="var(--ok)"/><text x="330" y="533" fill="#fff">10</text>
+      </g>
+    </svg>
+    <figcaption style="min-width:0"><strong>빨간 선</strong>은 나가는 길, <strong>파란 선</strong>은 돌아오는 길, <strong>회색 선</strong>은 전압계, <strong>초록 선</strong>은 동력계 전원이다. 동그란 번호가 <strong>꽂아야 할 선 10개</strong>다.</figcaption>
+  </figure>
+  </div>
+
+  <h3>선 10개 — 이 표대로만 꽂아라</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>선</th><th>여기서</th><th>여기로</th><th>왜</th></tr></thead>
+      <tbody>
+        <tr><td class="v" style="color:var(--warn)">1</td><td>전원 <strong>7</strong> (＋)</td><td>전류계 <strong>＋</strong></td><td>물이 나가는 첫 칸</td></tr>
+        <tr><td class="v" style="color:var(--warn)">2</td><td>전류계 <strong>−</strong></td><td>모터 <strong>1</strong></td><td>바퀴 돌리는 길로</td></tr>
+        <tr><td class="v" style="color:var(--warn)">3</td><td>모터 <strong>1</strong></td><td>모터 <strong>5</strong></td><td>자석 만드는 길로 갈라짐</td></tr>
+        <tr><td class="v" style="color:var(--warn)">4</td><td>모터 <strong>6</strong></td><td>모터 <strong>7</strong></td><td>계자 뒤에 가변저항 잇기</td></tr>
+        <tr><td class="v" style="color:var(--alt)">5</td><td>모터 <strong>2</strong></td><td>전원 <strong>N</strong> (−)</td><td>바퀴 길에서 돌아옴</td></tr>
+        <tr><td class="v" style="color:var(--alt)">6</td><td>모터 <strong>8</strong></td><td>전원 <strong>N</strong> (−)</td><td>자석 길에서 돌아옴</td></tr>
+        <tr><td class="v" style="color:var(--ink-3)">7</td><td>전압계 <strong>＋</strong></td><td>전원 <strong>7</strong></td><td>세기 재려고 걸침</td></tr>
+        <tr><td class="v" style="color:var(--ink-3)">8</td><td>전압계 <strong>−</strong></td><td>전원 <strong>N</strong></td><td>반대쪽에 걸침</td></tr>
+        <tr><td class="v" style="color:var(--ok)">9</td><td><strong>120 Vac 1</strong></td><td>동력계</td><td>동력계 전원</td></tr>
+        <tr><td class="v" style="color:var(--ok)">10</td><td><strong>120 Vac N</strong></td><td>동력계</td><td>동력계 전원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note" style="margin-top:12px">
+    <span class="tag">3번 선이 헷갈리면</span>
+    <p>3번은 <strong>모터 1번 구멍에 이미 꽂힌 선 위에 한 번 더 꽂는</strong> 선이다. 바나나 플러그는 <strong>뒤통수에 또 꽂을 수 있게</strong> 되어 있다. 그래서 한 구멍에 두 선을 물릴 수 있다. 이게 "갈라진다"는 뜻이다.</p>
+    <p>5번과 6번도 마찬가지로 <strong>전원 N 한 구멍에 두 선</strong>이 겹쳐 꽂힌다. 6번을 모터 <strong>8</strong>에서 <strong>2</strong>로 꽂아도 전기적으로 똑같다 — 어차피 둘 다 N으로 가니까.</p>
+  </div>
+
+  <h3>꽂는 순서 — 위에서부터 차례로</h3>
+  <ol class="steps">
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 01</span><span class="txt">전원 <strong>7</strong> → 전류계 <strong>＋</strong></span><span class="why">빨간 선을 쓰면 나중에 알아보기 쉽다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 02</span><span class="txt">전류계 <strong>−</strong> → 모터 <strong>1</strong></span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 03</span><span class="txt">모터 <strong>1</strong> → 모터 <strong>5</strong></span><span class="why">1번에 이미 꽂힌 플러그 뒤통수에 겹쳐 꽂는다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 04</span><span class="txt">모터 <strong>6</strong> → 모터 <strong>7</strong></span><span class="why">계자 코일 뒤에 가변저항을 한 줄로 잇는 짧은 선</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 05</span><span class="txt">모터 <strong>2</strong> → 전원 <strong>N</strong></span><span class="why">여기서부터는 파란 선이나 검은 선으로</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 06</span><span class="txt">모터 <strong>8</strong> → 전원 <strong>N</strong></span><span class="why">N에 이미 꽂힌 플러그 뒤통수에 겹쳐 꽂는다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 07</span><span class="txt">전압계 <strong>＋</strong> → 전원 <strong>7</strong></span><span class="why">7번에도 겹쳐 꽂는다</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 08</span><span class="txt">전압계 <strong>−</strong> → 전원 <strong>N</strong></span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 09</span><span class="txt"><strong>120 Vac 1</strong> → 동력계</span><span class="why">동력계가 4사분면 신형이면 이 선이 필요 없다. 조교에게 확인</span></span></label></li>
+    <li><label class="step"><input type="checkbox"><span class="body"><span class="num">선 10</span><span class="txt"><strong>120 Vac N</strong> → 동력계</span></span></label></li>
+  </ol>
+
+  <div class="alert" style="margin-top:12px">
+    <span class="tag">3번과 4번 구멍은 오늘 안 쓴다</span>
+    <p>모터 패널에 <strong>3번과 4번</strong> 구멍도 있는데, 그건 <strong>직권용 계자</strong>다. 오늘은 분권이라 <strong>아무것도 꽂지 마라.</strong> 비워 두는 게 맞다.</p>
+  </div>
+
+  <h3>다 꽂았으면 손가락으로 한 바퀴 돌아봐라</h3>
+  <p>눈으로만 보면 꼭 하나를 놓친다. <strong>손가락을 대고 선을 따라가면서</strong> 소리 내어 짚어라. 두 바퀴다.</p>
+  <div class="calc">
+    <div class="fx">
+      <span class="lab">첫째 바퀴 · 바퀴 돌리는 길</span>
+      <div class="eq">7 → A＋ → A− → 1 → 2 → N</div>
+      <p class="exp">손가락이 <b>한 번도 안 끊기고</b> 7번에서 N번까지 가면 성공이다.</p>
+    </div>
+    <div class="fx">
+      <span class="lab">둘째 바퀴 · 자석 만드는 길</span>
+      <div class="eq">7 → A＋ → A− → 1 → 5 → 6 → 7 → 8 → N</div>
+      <p class="exp">여기 <span class="mono">7</span>은 <b>모터의 7번 구멍</b>이다. 전원 7번과 헷갈리지 마라.</p>
+    </div>
+    <div class="fx">
+      <span class="lab">셋째 · 전압계</span>
+      <div class="eq">7 ── V ── N</div>
+      <p class="exp">전압계는 <b>길을 끊지 않고 옆에 걸쳐만</b> 있어야 한다.</p>
+    </div>
+  </div>
+
+  <div class="alert" style="margin-top:12px">
+    <span class="tag">전원 넣기 직전 5초 점검</span>
+    <p>① 전류계가 <strong>길 중간에 끼워져</strong> 있나 (걸쳐만 있으면 퓨즈 나감)<br>
+       ② 전압계는 <strong>걸쳐만</strong> 있나<br>
+       ③ 모터 <strong>5·6·7·8</strong>이 한 줄로 이어졌나<br>
+       ④ 접지(GND)는 <strong>아무 데도 안 꽂혔나</strong><br>
+       ⑤ 노브가 <strong>0</strong>, 동력계 LOAD CONTROL이 <strong>MIN</strong>인가</p>
+  </div>
+
+  <h3>이런 실수를 제일 많이 한다</h3>
+  <div class="fixes">
+    <details class="fx1"><summary>전류계를 걸쳐 놓았다 (제일 위험)</summary><div class="fixbody">
+      <p>전류계는 <b>길을 끊고 그 사이에</b> 넣는 것이다. 걸쳐 놓으면 전기가 모터를 안 거치고 계기로만 쏟아져 <b>퓨즈가 끊어진다.</b></p>
+      <ol><li>선 1번과 2번이 전류계의 <b>서로 다른 쪽</b>(＋와 −)에 꽂혀 있는지 봐라.</li>
+          <li>둘 다 같은 쪽에 꽂혀 있으면 그게 걸쳐 놓은 것이다.</li></ol>
+    </div></details>
+    <details class="fx1"><summary>모터 5·6·7·8을 한 줄로 안 이었다</summary><div class="fixbody">
+      <p>계자와 가변저항은 <b>한 줄</b>로 이어야 한다. 순서는 <span class="mono">5 → 6 → 7 → 8</span>.</p>
+      <ol><li><b>6과 7 사이 짧은 선</b>(4번)을 빠뜨리는 경우가 가장 많다.</li>
+          <li>이게 빠지면 자석이 안 만들어져 모터가 안 돈다. 최악은 속도가 치솟는 것이다.</li></ol>
+    </div></details>
+    <details class="fx1"><summary>모터 1번에 선을 하나만 꽂았다</summary><div class="fixbody">
+      <p>1번 구멍에는 <b>선이 두 개</b> 꽂혀야 한다 — 전류계에서 오는 것(2번)과 5번으로 가는 것(3번).</p>
+      <ol><li>여기서 길이 <b>갈라지기</b> 때문이다. 하나만 꽂으면 자석 길에 전기가 안 간다.</li>
+          <li>플러그 뒤통수에 겹쳐 꽂으면 된다.</li></ol>
+    </div></details>
+    <details class="fx1"><summary>전원 7번과 모터 7번을 헷갈렸다</summary><div class="fixbody">
+      <p>이름이 같은 7번이 <b>두 군데</b> 있다.</p>
+      <ol><li><b>전원의 7</b> = 파워서플라이에 있는 직류 ＋ 구멍</li>
+          <li><b>모터의 7</b> = EMS 8211 패널의 가변저항 입구</li>
+          <li>표를 볼 때 "전원 7"인지 "모터 7"인지 앞말을 꼭 같이 읽어라.</li></ol>
+    </div></details>
+    <details class="fx1"><summary>3번·4번 구멍에 선을 꽂았다</summary><div class="fixbody">
+      <p>그건 <b>직권용</b>이라 오늘은 쓰지 않는다. 뽑아서 비워 둬라.</p>
+    </div></details>
   </div>
 </section>
 
